@@ -1,36 +1,40 @@
 name: Tests
 
 on:
-    push:
-        branches:
-            - main
-            - master
-    pull_request:
-        branches:
-            - main
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
 
 jobs:
-    tests:
-        runs-on: ${{ matrix.os }}
-        strategy:
-            fail-fast: true
-            matrix:
-                os: [ubuntu-latest, windows-latest]
-                node: [16, 17, 18, 19, 20]
-                stability: [prefer-lowest, prefer-stable]
-        name: Node.js ${{ matrix.node }} on ${{ matrix.os }}
-        steps:
-            - uses: actions/checkout@v4
-            - name: Setup Node.js
-              uses: actions/setup-node@v3
-              with:
-                  node-version: ${{ matrix.node }}
-                  cache: "npm"
-            - name: Install dependencies
-              run: npm ci
-            - name: Setup truffle
-              run: npm install -g truffle
-            - name: Run tests
-              run: npm test
-              env:
-                  NODE_OPTIONS: --experimental-vm-modules
+  tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [16, 17, 18, 19, 20]
+        stability: [prefer-lowest, prefer-stable]
+    name: Node.js ${{ matrix.node }} on ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Setup truffle
+        run: npm install -g truffle
+      - name: Setup ganache
+        run: npm install -g ganache-cli
+      - name: Start ganache
+        run: ganache-cli --gasLimit 0xfffffffffff --allowUnlimitedContractSize -e 1000000 -m "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat" > /dev/null & sleep 5
+      - name: Run tests
+        run: npm test
+        env:
+            NODE_OPTIONS: --experimental-vm-modules
