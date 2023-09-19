@@ -16,9 +16,9 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest, windows-latest]
-        node: [16, 17, 18, 19, 20]
+        node: [18, 19, 20]
         stability: [prefer-lowest, prefer-stable]
-    name: Node.js ${{ matrix.node }} on ${{ matrix.os }}
+    name: Node.js ${{ matrix.node }} on ${{ matrix.os }} (${{ matrix.stability }})
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
@@ -26,14 +26,14 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: "npm"
-      - name: Install dependencies
-        run: npm ci
-      - name: Setup truffle
-        run: npm install -g truffle
       - name: Setup ganache
         run: npm install -g ganache-cli
       - name: Start ganache
-        run: ganache-cli --gasLimit 0xfffffffffff --allowUnlimitedContractSize -e 1000000 -m "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat" > /dev/null & sleep 5
+        run: ganache-cli --gasLimit 0xfffffffffff -e 1000000 -m "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat" > /dev/null &
+      - name: Setup truffle
+        run: npm install -g truffle
+      - name: Install dependencies
+        run: npm ci
       - name: Run tests
         run: npm test
         env:
