@@ -16,7 +16,7 @@ jobs:
             fail-fast: true
             matrix:
                 os: [ubuntu-latest, windows-latest]
-                node: [16, 17, 18, 19, 20, 21]
+                node: [16, 17, 18, 19, 20]
                 stability: [prefer-lowest, prefer-stable]
         name: Node.js ${{ matrix.node }} on ${{ matrix.os }}
         steps:
