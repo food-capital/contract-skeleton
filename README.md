@@ -1,6 +1,6 @@
 # ERC721 Skeleton
 
-This is a skeleton for an ERC721 contract. It is based on the [OepnZeppelin](https://www.openzeppelin.com/contracts)
+This is a skeleton for an ERC721 contract. It is based on the [OpenZeppelin](https://www.openzeppelin.com/contracts)
 
 ## Requirements
 - [Node.js](https://nodejs.org/en/) ^16.6.0
